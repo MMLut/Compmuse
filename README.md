@@ -1,2 +1,2 @@
 # Compmuse
-CompMuse
+My github page [image](smiley.png)
