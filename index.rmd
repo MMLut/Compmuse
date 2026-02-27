@@ -94,4 +94,5 @@ p
 p <- make_chroma_distance_plot(read_csv("4ui_chrom.csv", show_col_types = FALSE), read_csv("4ui_chrom.csv", show_col_types = FALSE), label1 = "4ui12", label2 = "4ui12", title = "4ui12: Cepstrogram Self‑Similarity")
 p
 ```
-Didn't quite have time for the text yet, will be here before 12:00 28-02
+<br>
+<h3> Didn't quite have time for the text yet, will be here before 12:00 28-02</h3>
