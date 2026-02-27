@@ -1,3 +1,2 @@
 # Compmuse
-My github page 
-![image](smiley.png)
+My github page
