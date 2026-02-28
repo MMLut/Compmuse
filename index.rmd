@@ -12,6 +12,7 @@ library(tidyr)
 library(dplyr)
 library(purrr)
 library(ggplot2)
+library(patchwork)
 ```
 
 ## Week 9
@@ -35,7 +36,7 @@ make_timbre_similarity_plot <- function(FileName, step = 50L, title = NULL) {
   coord_fixed() +
   scale_fill_viridis_c(guide = "none") +
   theme_classic() +
-  labs(x = "", y = "")
+  labs(title = title, x = "", y = "")
 }
 make_chroma_distance_plot <- function(
   data1,
@@ -83,16 +84,14 @@ make_chroma_distance_plot <- function(
 
 
 p <- make_timbre_similarity_plot("heal_cep.csv", title = "Heal: Cepstrogram Self‑Similarity")
-p
-p <- make_chroma_distance_plot(read_csv("heal_chrom.csv", show_col_types = FALSE), read_csv("heal_chrom.csv", show_col_types = FALSE), label1 = "heal", label2 = "heal", title = "Heal: Cepstrogram Self‑Similarity")
-p
+q <- make_chroma_distance_plot(read_csv("heal_chrom.csv", show_col_types = FALSE), read_csv("heal_chrom.csv", show_col_types = FALSE), label1 = "heal", label2 = "heal", title = "Heal: Chromagram Self‑Similarity")
+p | q
 ```
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, cache=TRUE}
 p <- make_timbre_similarity_plot("4ui_cep.csv", title = "4ui12: Cepstrogram Self‑Similarity")
-p
-p <- make_chroma_distance_plot(read_csv("4ui_chrom.csv", show_col_types = FALSE), read_csv("4ui_chrom.csv", show_col_types = FALSE), label1 = "4ui12", label2 = "4ui12", title = "4ui12: Cepstrogram Self‑Similarity")
-p
+q <- make_chroma_distance_plot(read_csv("4ui_chrom.csv", show_col_types = FALSE), read_csv("4ui_chrom.csv", show_col_types = FALSE), label1 = "4ui12", label2 = "4ui12", title = "4ui12: Chromagram Self‑Similarity")
+p | q
 ```
 <br>
-<h3> Didn't quite have time for the text yet, will be here before 12:00 28-02</h3>
+The self-similarity matrices show that there are clear changes in the kind of music Yeule produced when they started compared to now. The chromagram of "Heal" (2014) is very blurry, while the cepstogram is more clearly divided in blocks. This suggests that the song is more focused on the mood than on a more clear verse and chorus structure. In contrast, "4ui12" (2023) has more clear blocks in the chromagram, there is still a lot of novel parts, but there sections do repeat more clearly and are easier to see. This matches what you can hear in the songs, the newer song has stronger contrasts, clearer sections, and a more defined structure compared to the earlier, more atmospheric style.
