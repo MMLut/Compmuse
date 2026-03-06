@@ -1,0 +1,239 @@
+---
+title: "index"
+author: "MMLut"
+date: "2026-02-25"
+format: 
+  dashboard:
+    orientation: columns
+---
+```{r setup, warning=FALSE, message=FALSE, include=FALSE}
+library(compmus)
+library(readr)
+library(tidyr)
+library(dplyr)
+library(purrr)
+library(ggplot2)
+library(patchwork)
+```
+# Main
+[Github](https://github.com/mmlut/compmuse)
+
+# Week 9
+
+## Heal
+```{r pressure, warning=FALSE, message=FALSE, echo=FALSE, cache=TRUE}
+make_timbre_similarity_plot <- function(FileName, step = 50L, title = NULL) {
+  read_csv(FileName, show_col_types = FALSE) |>
+  compmus_wrangle_timbre() |> 
+  filter(row_number() %% step == 0L) |> 
+  mutate(timbre = map(timbre, compmus_normalise, "euclidean")) |>
+  compmus_self_similarity(timbre, "cosine") |> 
+  ggplot(
+    aes(
+      x = xstart + xduration / 2,
+      width = step * xduration,
+      y = ystart + yduration / 2,
+      height = step * yduration,
+      fill = d
+    )
+  ) +
+  geom_tile() +
+  coord_fixed() +
+  scale_fill_viridis_c(guide = "none") +
+  theme_classic() +
+  labs(title = title, x = "", y = "")
+}
+
+make_chroma_distance_plot <- function(
+  data1,
+  data2,
+  label1 = "",
+  label2 = "",
+  title = NULL,
+  step = 50L,
+  norm_method = "chebyshev",
+  dist_method = "euclidean"
+) {
+  d1 <- data1 |>
+    compmus_wrangle_chroma() |> 
+    mutate(pitches = map(pitches, compmus_normalise, norm_method)) |> 
+    filter(row_number() %% step == 0L)
+  
+  d2 <- data2 |>
+    compmus_wrangle_chroma() |> 
+    mutate(pitches = map(pitches, compmus_normalise, norm_method)) |> 
+    filter(row_number() %% step == 0L)
+  
+  compmus_long_distance(
+    d1,
+    d2,
+    feature = pitches,
+    method = dist_method
+  ) |>
+    filter(!is.nan(d)) |> 
+    ggplot(
+      aes(
+        x = xstart + xduration / 2,
+        width = step * xduration,
+        y = ystart + yduration / 2,
+        height = step * yduration,
+        fill = d
+      )
+    ) +
+    geom_tile() +
+    coord_equal() +
+    labs(title = title, x = label1, y = label2) +
+    theme_minimal() +
+    scale_fill_viridis_c(guide = NULL)
+}
+
+p <- make_timbre_similarity_plot("heal_cep.csv", title = "Heal: Cepstrogram Self‑Similarity")
+q <- make_chroma_distance_plot(read_csv("heal_chrom.csv", show_col_types = FALSE), read_csv("heal_chrom.csv", show_col_types = FALSE), label1 = "heal", label2 = "heal", title = "Heal: Chromagram Self‑Similarity")
+p | q
+```
+
+## 4ui12
+```{r, echo=FALSE, warning=FALSE, message=FALSE, cache=TRUE}
+p <- make_timbre_similarity_plot("4ui_cep.csv", title = "4ui12: Cepstrogram Self‑Similarity")
+q <- make_chroma_distance_plot(read_csv("4ui_chrom.csv", show_col_types = FALSE), read_csv("4ui_chrom.csv", show_col_types = FALSE), label1 = "4ui12", label2 = "4ui12", title = "4ui12: Chromagram Self‑Similarity")
+p | q
+```
+
+## Analysis
+
+The self-similarity matrices show that there are clear changes in the kind of music Yeule produced when they started compared to now. The chromagram of "Heal" (2014) is very blurry, while the cepstogram is more clearly divided in blocks. This suggests that the song is more focused on the mood than on a more clear verse and chorus structure. In contrast, "4ui12" (2023) has more clear blocks in the chromagram, there is still a lot of novel parts, but there sections do repeat more clearly and are easier to see. This matches what you can hear in the songs, the newer song has stronger contrasts, clearer sections, and a more defined structure compared to the earlier, more atmospheric style.
+
+# Week 10
+```{r, echo=FALSE, warning=FALSE, message=FALSE, cache=TRUE}
+circshift <- function(v, n) {
+  if (n == 0) v else c(tail(v, n), head(v, -n))
+}
+
+#      C     C#    D     Eb    E     F     F#    G     Ab    A     Bb    B
+major_chord <-
+  c(   1,    0,    0,    0,    1,    0,    0,    1,    0,    0,    0,    0)
+minor_chord <-
+  c(   1,    0,    0,    1,    0,    0,    0,    1,    0,    0,    0,    0)
+seventh_chord <-
+  c(   1,    0,    0,    0,    1,    0,    0,    1,    0,    0,    1,    0)
+
+major_key <-
+  c(6.35, 2.23, 3.48, 2.33, 4.38, 4.09, 2.52, 5.19, 2.39, 3.66, 2.29, 2.88)
+minor_key <-
+  c(6.33, 2.68, 3.52, 5.38, 2.60, 3.53, 2.54, 4.75, 3.98, 2.69, 3.34, 3.17)
+
+chord_templates <-
+  tribble(
+    ~name, ~template,
+    "Gb:7", circshift(seventh_chord, 6),
+    "Gb:maj", circshift(major_chord, 6),
+    "Bb:min", circshift(minor_chord, 10),
+    "Db:maj", circshift(major_chord, 1),
+    "F:min", circshift(minor_chord, 5),
+    "Ab:7", circshift(seventh_chord, 8),
+    "Ab:maj", circshift(major_chord, 8),
+    "C:min", circshift(minor_chord, 0),
+    "Eb:7", circshift(seventh_chord, 3),
+    "Eb:maj", circshift(major_chord, 3),
+    "G:min", circshift(minor_chord, 7),
+    "Bb:7", circshift(seventh_chord, 10),
+    "Bb:maj", circshift(major_chord, 10),
+    "D:min", circshift(minor_chord, 2),
+    "F:7", circshift(seventh_chord, 5),
+    "F:maj", circshift(major_chord, 5),
+    "A:min", circshift(minor_chord, 9),
+    "C:7", circshift(seventh_chord, 0),
+    "C:maj", circshift(major_chord, 0),
+    "E:min", circshift(minor_chord, 4),
+    "G:7", circshift(seventh_chord, 7),
+    "G:maj", circshift(major_chord, 7),
+    "B:min", circshift(minor_chord, 11),
+    "D:7", circshift(seventh_chord, 2),
+    "D:maj", circshift(major_chord, 2),
+    "F#:min", circshift(minor_chord, 6),
+    "A:7", circshift(seventh_chord, 9),
+    "A:maj", circshift(major_chord, 9),
+    "C#:min", circshift(minor_chord, 1),
+    "E:7", circshift(seventh_chord, 4),
+    "E:maj", circshift(major_chord, 4),
+    "G#:min", circshift(minor_chord, 8),
+    "B:7", circshift(seventh_chord, 11),
+    "B:maj", circshift(major_chord, 11),
+    "D#:min", circshift(minor_chord, 3)
+  )
+
+key_templates <-
+  tribble(
+    ~name, ~template,
+    "Gb:maj", circshift(major_key, 6),
+    "Bb:min", circshift(minor_key, 10),
+    "Db:maj", circshift(major_key, 1),
+    "F:min", circshift(minor_key, 5),
+    "Ab:maj", circshift(major_key, 8),
+    "C:min", circshift(minor_key, 0),
+    "Eb:maj", circshift(major_key, 3),
+    "G:min", circshift(minor_key, 7),
+    "Bb:maj", circshift(major_key, 10),
+    "D:min", circshift(minor_key, 2),
+    "F:maj", circshift(major_key, 5),
+    "A:min", circshift(minor_key, 9),
+    "C:maj", circshift(major_key, 0),
+    "E:min", circshift(minor_key, 4),
+    "G:maj", circshift(major_key, 7),
+    "B:min", circshift(minor_key, 11),
+    "D:maj", circshift(major_key, 2),
+    "F#:min", circshift(minor_key, 6),
+    "A:maj", circshift(major_key, 9),
+    "C#:min", circshift(minor_key, 1),
+    "E:maj", circshift(major_key, 4),
+    "G#:min", circshift(minor_key, 8),
+    "B:maj", circshift(major_key, 11),
+    "D#:min", circshift(minor_key, 3)
+  )
+
+heal_chrom = read_csv("heal_chrom.csv")
+heal_cep = read_csv("heal_cep.csv")
+chrom_4ui12 = read_csv("4ui_chrom.csv")
+cep_4ui12 = read_csv("4ui_cep.csv")
+```
+
+## heal
+```{r, echo=FALSE, warning=FALSE, message=FALSE, cache=TRUE}
+heal_chrom |> 
+  compmus_wrangle_chroma() |> 
+  filter(row_number() %% 50L == 0L) |> 
+  compmus_match_pitch_template(
+    key_templates,         # Change to chord_templates if desired
+    method = "euclidean",  # Try different distance metrics
+    norm = "manhattan"     # Try different norms
+  ) |>
+  ggplot(
+    aes(x = start + duration / 2, width = 50 * duration, y = name, fill = d)
+  ) +
+  geom_tile() +
+  scale_fill_viridis_c(guide = "none") +
+  theme_minimal() +
+  labs(x = "Time (s)", y = "", title="Yeule - heal (2014) keygram")
+```
+
+## 4ui12
+```{r, echo=FALSE, warning=FALSE, message=FALSE, cache=TRUE}
+chrom_4ui12 |> 
+  compmus_wrangle_chroma() |> 
+  filter(row_number() %% 50L == 0L) |> 
+  compmus_match_pitch_template(
+    key_templates,         # Change to chord_templates if desired
+    method = "euclidean",  # Try different distance metrics
+    norm = "manhattan"     # Try different norms
+  ) |>
+  ggplot(
+    aes(x = start + duration / 2, width = 50 * duration, y = name, fill = d)
+  ) +
+  geom_tile() +
+  scale_fill_viridis_c(guide = "none") +
+  theme_minimal() +
+  labs(x = "Time (s)", y = "", title="Yeule - 4ui12 (2023) keygram")
+```
+
+## Analysis
+The keygrams for heal (2014) and 4ui12 (2023) each have distinct features, clearly showing the differences that are audible in the songs themselves. Heal has a more dreamy, atmospheric sound, which is visible in the keygram as darker colours across all keys, showing no strong match to any single key across much of the song. Whereas for 4ui12 there are stronger matches overall, but spread across many of the keys at the same time, likely due to a more layered production. This is expected, because Yeule's later music follows a more polished, hyperpop style of production.
