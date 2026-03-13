@@ -237,3 +237,49 @@ chrom_4ui12 |>
 
 ## Analysis
 The keygrams for heal (2014) and 4ui12 (2023) each have distinct features, clearly showing the differences that are audible in the songs themselves. Heal has a more dreamy, atmospheric sound, which is visible in the keygram as darker colours across all keys, showing no strong match to any single key across much of the song. Whereas for 4ui12 there are stronger matches overall, but spread across many of the keys at the same time, likely due to a more layered production. This is expected, because Yeule's later music follows a more polished, hyperpop style of production.
+
+# Week 11
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, cache=TRUE}
+auto_4ui <- read_csv("4ui_tempo_auto.csv")
+dft_4ui <- read_csv("4ui_tempo_dft.csv")
+auto_heal <- read_csv("heal_tempo_auto.csv")
+dft_heal <- read_csv("heal_tempo_dft.csv")
+```
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, cache=TRUE}
+make_tempogram_auto <- function(FileName, title = NULL) {
+  FileName |>
+  pivot_longer(-TIME, names_to = "tempo") |> 
+  mutate(tempo = as.numeric(tempo)) |> 
+  ggplot(aes(x = TIME, y = tempo, fill = value)) +
+  geom_raster() +
+  scale_y_continuous(transform = c("reciprocal", "reverse"), breaks = seq(50, 350, 100)) +    
+  scale_fill_viridis_c(guide = "none") +
+  labs(title = title, x = "Time (s)", y = "Tempo (BPM)") +
+  theme_classic()
+}
+make_tempogram_dft <- function(FileName, title = NULL) {
+  FileName |>
+  pivot_longer(-TIME, names_to = "tempo") |> 
+  mutate(tempo = as.numeric(tempo)) |> 
+  ggplot(aes(x = TIME, y = tempo, fill = value)) +
+  geom_raster() +
+  scale_fill_viridis_c(guide = "none") +
+  labs(title = title, x = "Time (s)", y = "Tempo (BPM)") +
+  theme_classic()
+}
+```
+
+## heal
+```{r, echo=FALSE, warning=FALSE, message=FALSE, cache=TRUE}
+make_tempogram_dft(dft_heal, title = "Yeule - heal (2014), tempogram (Discrete Fourier Transform)")
+#make_tempogram_auto(auto_heal, "heal (2014), tempogram (Autocorrelation)")
+```
+
+## 4ui12
+```{r, echo=FALSE, warning=FALSE, message=FALSE, cache=TRUE}
+make_tempogram_dft(dft_4ui, title = "Yeule - 4ui12 (2023), tempogram (Discrete Fourier Transform)")
+#make_tempogram_auto(auto_4ui, "4ui12 (2023), tempogram (Autocorrelation)")
+```
+
+## Analysis
+"heal" has a strong consistent tempo throughout the whole song without much interruption in the song, likely because it is a relatively simple song layer-wise, which makes it easier for the tempogram to detect the tempo. "4ui12" however shows a clear moment in the song where the tempo suddenly becomes much clearer, this is at a moment in the song where much of the dense layering of different sounds temporarily fall away and almost only the main instruments remain, thanks to this the main pulses of the tempo become much clearer, and this is what the tempogram captured as clearer tempo signal rather than a tempo change.
