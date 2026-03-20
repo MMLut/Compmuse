@@ -14,6 +14,30 @@ library(dplyr)
 library(purrr)
 library(ggplot2)
 library(patchwork)
+library(ggdendro)
+library(heatmaply)
+library(tidymodels)
+library(tibble)
+library(kknn)
+library(forcats)
+library(stringr)
+library(ranger)
+
+get_conf_mat <- function(fit) {
+  outcome <- .get_tune_outcome_names(fit)
+  fit |> 
+    collect_predictions() |> 
+    conf_mat(truth = outcome, estimate = .pred_class)
+}  
+
+get_pr <- function(fit) {
+  fit |> 
+    conf_mat_resampled() |> 
+    group_by(Prediction) |> mutate(precision = Freq / sum(Freq)) |> 
+    group_by(Truth) |> mutate(recall = Freq / sum(Freq)) |> 
+    ungroup() |> filter(Prediction == Truth) |> 
+    select(class = Prediction, precision, recall)
+}
 ```
 # Main
 [Github](https://github.com/mmlut/compmuse)
@@ -283,3 +307,79 @@ make_tempogram_dft(dft_4ui, title = "Yeule - 4ui12 (2023), tempogram (Discrete F
 
 ## Analysis
 "heal" has a strong consistent tempo throughout the whole song without much interruption in the song, likely because it is a relatively simple song layer-wise, which makes it easier for the tempogram to detect the tempo. "4ui12" however shows a clear moment in the song (around the 100 second mark) where the tempo suddenly becomes much clearer, this is at a moment in the song where much of the dense layering of different sounds temporarily fall away and almost only the main instruments remain, thanks to this the main pulses of the tempo become much clearer, and this is what the tempogram captured as clearer tempo signal rather than a tempo change.
+
+# Week 12
+```{r, echo=FALSE, warning=FALSE, message=FALSE, cache=TRUE}
+# Data loading + all model fitting (no plots here)
+yeule_raw <- read_csv("yeule.csv")
+yeule <- yeule_raw |>
+  filter(`Album Name` %in% c(
+    "Serotonin II", "Glitch Princess", "softscars",
+    "Evangelic Girl is a Gun", "Coma", "Pathos", "Yeule"
+  )) |>
+  filter(`Track Name` != "The Things They Did for Me Out of Love") |>
+  mutate(`Album Name` = factor(`Album Name`, levels = c(
+    "Yeule", "Coma", "Pathos", "Serotonin II",
+    "Glitch Princess", "softscars", "Evangelic Girl is a Gun"
+  )))
+
+yeule_recipe <- recipe(
+    `Album Name` ~
+      Valence + Loudness + Danceability + Acousticness,
+    data = yeule
+  ) |>
+  step_center(all_predictors()) |>
+  step_scale(all_predictors())
+
+yeule_cv <- yeule |> vfold_cv(5)
+
+knn_model <-
+  nearest_neighbor(neighbors = 1) |>
+  set_mode("classification") |>
+  set_engine("kknn")
+
+forest_model <-
+  rand_forest() |>
+  set_mode("classification") |>
+  set_engine("ranger", importance = "impurity")
+
+yeule_knn <-
+  workflow() |>
+  add_recipe(yeule_recipe) |>
+  add_model(knn_model) |>
+  fit_resamples(yeule_cv, control = control_resamples(save_pred = TRUE))
+
+yeule_forest <-
+  workflow() |>
+  add_recipe(yeule_recipe) |>
+  add_model(forest_model) |>
+  fit_resamples(yeule_cv, control = control_resamples(save_pred = TRUE))
+
+yeule_recipe_slim <- recipe(
+    `Album Name` ~ Acousticness + Energy + Loudness + Instrumentalness,
+    data = yeule
+  ) |>
+  step_center(all_predictors()) |>
+  step_scale(all_predictors())
+
+yeule_forest_slim <-
+  workflow() |>
+  add_recipe(yeule_recipe_slim) |>
+  add_model(forest_model) |>
+  fit_resamples(yeule_cv, control = control_resamples(save_pred = TRUE))
+```
+
+## KNN confusion matrix
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+yeule_knn |> get_conf_mat() |> autoplot(type = "heatmap") +
+  labs(title = "KNN classifier (1-nearest neighbour)")
+```
+
+## Random forest confusion matrix
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+yeule_forest |> get_conf_mat() |> autoplot(type = "heatmap") +
+  labs(title = "Random forest — all features")
+```
+
+## Analysis
+Two classifiers were trained to predict which album a track belongs to — a 1-nearest neighbour KNN and a random forest — both evaluated with 5-fold cross-validation. Both achieve around 40% accuracy, modest but above chance for seven classes. Both "Evangelic Girl is a Gun" and "Glitch Princess" classify the best in both models, likely because both albums with a distinctive sound, while Coma and the debut Yeule are almost never identified correctly. "Softscars" is often predicted to be in either "Evangelic Girl is a Gun" or "Glitch Princess", which makes sense, since it is the album released between the two and also has a sound that is a mix of the two. Overall the models both show that these Spotify features carry some signal, but not enough to reliably classify most of Yeule's releases.
