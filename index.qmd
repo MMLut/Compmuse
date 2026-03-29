@@ -22,6 +22,7 @@ library(kknn)
 library(forcats)
 library(stringr)
 library(ranger)
+library(kableExtra)
 
 get_conf_mat <- function(fit) {
   outcome <- .get_tune_outcome_names(fit)
@@ -39,10 +40,127 @@ get_pr <- function(fit) {
     select(class = Prediction, precision, recall)
 }
 ```
-# Main
+# Background
+
 [Github](https://github.com/mmlut/compmuse)
 
-# Week 9
+# Track-level features
+```{r track-features-data, warning=FALSE, message=FALSE, include=FALSE}
+yeule <- read_csv("yeule.csv")
+
+dset <- yeule %>%
+  mutate(ReleaseDate = as.Date(`Release Date`)) %>%
+  group_by(`Album Name`) %>%
+  mutate(AlbumRelease = min(ReleaseDate)) %>%
+  ungroup() %>%
+  mutate(
+    `Album Name` = paste0(`Album Name`, "\n(", format(AlbumRelease, "%Y"), ")"),
+    `Album Name` = reorder(`Album Name`, AlbumRelease)
+  ) %>%
+  pivot_longer(
+    cols = c(Danceability, Energy, Acousticness, Valence),
+    names_to = "Feature",
+    values_to = "Value"
+  )
+```
+## Track Features
+```{r track-features-plot, warning=FALSE, message=FALSE, echo=FALSE}
+ggplot(dset, aes(`Album Name`, Value, fill = `Album Name`)) +
+  geom_boxplot() +
+  facet_wrap(~ Feature, scales = "free_y") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), axis.title.y = element_blank(), legend.position = "none") +
+  scale_y_continuous(limits = c(0, 1))
+```
+## Analysis
+This is an analysis
+
+# wda
+```{r chromagrams, warning=FALSE, message=FALSE, include=FALSE}
+wood <- read_csv("heal_chrom.csv")
+ghosts <- read_csv("4ui_chrom.csv")
+p1 <- wood |>
+  compmus_wrangle_chroma() |> 
+  mutate(pitches = map(pitches, compmus_normalise, "euclidean")) |>
+  compmus_gather_chroma() |> 
+  ggplot(aes(
+    x = start + duration / 2,
+    width = duration,
+    y = pitch_class,
+    fill = value
+  )) +
+  geom_tile() +
+  labs(title = "Heal (2014)", x = "Time (s)", y = NULL, fill = "Magnitude") +
+  theme_minimal() +
+  scale_fill_viridis_c()
+
+p2 <- ghosts |>
+  compmus_wrangle_chroma() |> 
+  mutate(pitches = map(pitches, compmus_normalise, "euclidean")) |>
+  compmus_gather_chroma() |> 
+  ggplot(aes(
+    x = start + duration / 2,
+    width = duration,
+    y = pitch_class,
+    fill = value
+  )) +
+  geom_tile() +
+  labs(title = "4ui12 (2023)", x = "Time (s)", y = NULL, fill = "Magnitude") +
+  theme_minimal() +
+  scale_fill_viridis_c()
+```
+## Heal
+```{r chromagram-heal, warning=FALSE, message=FALSE, echo=FALSE}
+p1
+```
+## Heal
+```{r chromagram-4ui12, warning=FALSE, message=FALSE, echo=FALSE}
+p2
+```
+# Track Selection
+## Average Track
+```{r average-track, warning=FALSE, message=FALSE}
+most_average_tracks <- yeule %>%
+  mutate(ReleaseDate = as.Date(`Release Date`)) %>%
+  group_by(`Album Name`) %>%
+  mutate(AlbumRelease = min(ReleaseDate)) %>%
+  ungroup() %>%
+  mutate(across(
+    c(Danceability, Energy, Acousticness, Valence, Speechiness, Instrumentalness, Liveness, Tempo),
+    ~ (. - min(.)) / (max(.) - min(.)),
+    .names = "{.col}_norm"
+  )) %>%
+  group_by(`Album Name`) %>%
+  mutate(across(ends_with("_norm"), mean, .names = "{.col}_mean")) %>%
+  mutate(
+    distance = sqrt(
+      (Danceability_norm    - Danceability_norm_mean)^2 +
+      (Energy_norm          - Energy_norm_mean)^2 +
+      (Acousticness_norm    - Acousticness_norm_mean)^2 +
+      (Valence_norm         - Valence_norm_mean)^2 +
+      (Speechiness_norm     - Speechiness_norm_mean)^2 +
+      (Instrumentalness_norm - Instrumentalness_norm_mean)^2 +
+      (Liveness_norm        - Liveness_norm_mean)^2 +
+      (Tempo_norm           - Tempo_norm_mean)^2
+    )
+  ) %>%
+  slice_min(distance, n = 1, with_ties = FALSE) %>%
+  ungroup() %>%
+  arrange(AlbumRelease) %>%
+  mutate(Year = format(AlbumRelease, "%Y")) %>%
+  select(Year, `Album Name`, `Track Name`, Danceability, Energy, Acousticness, Valence, Speechiness, Instrumentalness, Liveness, Tempo)
+
+most_average_tracks %>%
+  kbl(digits = 2, caption = "Most Representative Track per Album") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>%
+  column_spec(1, bold = TRUE) %>%
+  column_spec(2, bold = TRUE)
+```
+
+## Analysis
+This is an analysis, where I am going to justify why I took the 2 tracks I chose to analyse more in-depth (Didn't have to do it for all albums, because purchasing music gets expensive for just a single course)
+
+# Chroma- and Timbre features
 
 ## Heal
 ```{r pressure, warning=FALSE, message=FALSE, echo=FALSE, cache=TRUE}
@@ -127,7 +245,7 @@ p | q
 
 The self-similarity matrices show that there are clear changes in the kind of music Yeule produced when they started compared to now. The chromagram of "Heal" (2014) is very blurry, while the cepstogram is more clearly divided in blocks. This suggests that the song is more focused on the mood than on a more clear verse and chorus structure. In contrast, "4ui12" (2023) has more clear blocks in the chromagram, there is still a lot of novel parts, but there sections do repeat more clearly and are easier to see. This matches what you can hear in the songs, the newer song has stronger contrasts, clearer sections, and a more defined structure compared to the earlier, more atmospheric style.
 
-# Week 10
+# Keygrams
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, cache=TRUE}
 circshift <- function(v, n) {
   if (n == 0) v else c(tail(v, n), head(v, -n))
@@ -262,7 +380,7 @@ chrom_4ui12 |>
 ## Analysis
 The keygrams for heal (2014) and 4ui12 (2023) each have distinct features, clearly showing the differences that are audible in the songs themselves. Heal has a more dreamy, atmospheric sound, which is visible in the keygram as darker colours across all keys, showing no strong match to any single key across much of the song. Whereas for 4ui12 there are stronger matches overall, but spread across many of the keys at the same time, likely due to a more layered production. This is expected, because Yeule's later music follows a more polished, hyperpop style of production.
 
-# Week 11
+# Temporal features
 ``` {r, echo=FALSE, warning=FALSE, message=FALSE, cache=TRUE}
 auto_4ui <- read_csv("4ui_tempo_auto.csv")
 dft_4ui <- read_csv("4ui_tempo_dft.csv")
@@ -308,7 +426,7 @@ make_tempogram_dft(dft_4ui, title = "Yeule - 4ui12 (2023), tempogram (Discrete F
 ## Analysis
 "heal" has a strong consistent tempo throughout the whole song without much interruption in the song, likely because it is a relatively simple song layer-wise, which makes it easier for the tempogram to detect the tempo. "4ui12" however shows a clear moment in the song (around the 100 second mark) where the tempo suddenly becomes much clearer, this is at a moment in the song where much of the dense layering of different sounds temporarily fall away and almost only the main instruments remain, thanks to this the main pulses of the tempo become much clearer, and this is what the tempogram captured as clearer tempo signal rather than a tempo change.
 
-# Week 12
+# Clustering
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, cache=TRUE}
 # Data loading + all model fitting (no plots here)
 yeule_raw <- read_csv("yeule.csv")
@@ -382,4 +500,4 @@ yeule_forest |> get_conf_mat() |> autoplot(type = "heatmap") +
 ```
 
 ## Analysis
-Two classifiers were trained to predict which album a track belongs to — a 1-nearest neighbour KNN and a random forest — both evaluated with 5-fold cross-validation. Both achieve around 40% accuracy, modest but above chance for seven classes. Both "Evangelic Girl is a Gun" and "Glitch Princess" classify the best in both models, likely because both albums with a distinctive sound, while Coma and the debut Yeule are almost never identified correctly. "Softscars" is often predicted to be in either "Evangelic Girl is a Gun" or "Glitch Princess", which makes sense, since it is the album released between the two and also has a sound that is a mix of the two. Overall the models both show that these Spotify features carry some signal, but not enough to reliably classify most of Yeule's releases.
+Two classifiers were trained to predict which album a track belongs to, a 1-nearest neighbour KNN and a random forest, both evaluated with 5-fold cross-validation. Both achieve around 40% accuracy, modest but above chance for seven classes. Both "Evangelic Girl is a Gun" and "Glitch Princess" classify the best in both models, likely because both albums with a distinctive sound, while Coma and the debut Yeule are almost never identified correctly. "Softscars" is often predicted to be in either "Evangelic Girl is a Gun" or "Glitch Princess", which makes sense, since it is the album released between the two and also has a sound that is a mix of the two. Overall the models both show that these Spotify features carry some signal, but not enough to reliably classify most of Yeule's releases.

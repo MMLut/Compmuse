@@ -49,6 +49,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="index_files/libs/quarto-dashboard/web-components.js" type="module"></script>
 <script src="index_files/libs/quarto-dashboard/components.js"></script>
 
+<script src="index_files/libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="index_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
 
 </head>
@@ -72,14 +74,14 @@ ul.task-list li input[type="checkbox"] {
         <div class="navbar-author">MMLut</div>
       </div>
     </div>
-<div id="dashboard-collapse" class="navbar-collapse collapse"><ul class="navbar-nav navbar-nav-scroll me-auto" role="tablist"><li class="nav-item" role="presentation"><a id="tab-main" class="nav-link active" data-bs-toggle="tab" role="tab" data-bs-target="#main" data-scrolling="false" href="#main" aria-controls="main" aria-selected="true"><span class="nav-link-text">Main</span></a></li><li class="nav-item" role="presentation"><a id="tab-week-9" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#week-9" data-scrolling="false" href="#week-9" aria-controls="week-9" aria-selected="false"><span class="nav-link-text">Week 9</span></a></li><li class="nav-item" role="presentation"><a id="tab-week-10" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#week-10" data-scrolling="false" href="#week-10" aria-controls="week-10" aria-selected="false"><span class="nav-link-text">Week 10</span></a></li><li class="nav-item" role="presentation"><a id="tab-week-11" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#week-11" data-scrolling="false" href="#week-11" aria-controls="week-11" aria-selected="false"><span class="nav-link-text">Week 11</span></a></li><li class="nav-item" role="presentation"><a id="tab-week-12" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#week-12" data-scrolling="false" href="#week-12" aria-controls="week-12" aria-selected="false"><span class="nav-link-text">Week 12</span></a></li></ul></div></div>
+<div id="dashboard-collapse" class="navbar-collapse collapse"><ul class="navbar-nav navbar-nav-scroll me-auto" role="tablist"><li class="nav-item" role="presentation"><a id="tab-background" class="nav-link active" data-bs-toggle="tab" role="tab" data-bs-target="#background" data-scrolling="false" href="#background" aria-controls="background" aria-selected="true"><span class="nav-link-text">Background</span></a></li><li class="nav-item" role="presentation"><a id="tab-track-level-features" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#track-level-features" data-scrolling="false" href="#track-level-features" aria-controls="track-level-features" aria-selected="false"><span class="nav-link-text">Track-level features</span></a></li><li class="nav-item" role="presentation"><a id="tab-wda" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#wda" data-scrolling="false" href="#wda" aria-controls="wda" aria-selected="false"><span class="nav-link-text">wda</span></a></li><li class="nav-item" role="presentation"><a id="tab-track-selection" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#track-selection" data-scrolling="false" href="#track-selection" aria-controls="track-selection" aria-selected="false"><span class="nav-link-text">Track Selection</span></a></li><li class="nav-item" role="presentation"><a id="tab-chroma--and-timbre-features" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#chroma--and-timbre-features" data-scrolling="false" href="#chroma--and-timbre-features" aria-controls="chroma--and-timbre-features" aria-selected="false"><span class="nav-link-text">Chroma- and Timbre features</span></a></li><li class="nav-item" role="presentation"><a id="tab-keygrams" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#keygrams" data-scrolling="false" href="#keygrams" aria-controls="keygrams" aria-selected="false"><span class="nav-link-text">Keygrams</span></a></li><li class="nav-item" role="presentation"><a id="tab-temporal-features" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#temporal-features" data-scrolling="false" href="#temporal-features" aria-controls="temporal-features" aria-selected="false"><span class="nav-link-text">Temporal features</span></a></li><li class="nav-item" role="presentation"><a id="tab-clustering" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#clustering" data-scrolling="false" href="#clustering" aria-controls="clustering" aria-selected="false"><span class="nav-link-text">Clustering</span></a></li></ul></div></div>
 </nav>
 </header>
 <div class="page-layout-custom quarto-dashboard-content bslib-gap-spacing html-fill-container bslib-page-fill quarto-dashboard-pages">  
 
 <div class="bslib-grid-item html-fill-item tab-content bslib-grid" data-layout="fill" style="display: grid; grid-template-columns: minmax(3em, 1fr);
 grid-auto-rows: minmax(0, 1fr);">
-<div id="main" class="dashboard-page tab-pane show active html-fill-item html-fill-container" data-orientation="columns" aria-labelledby="tab-main">
+<div id="background" class="dashboard-page tab-pane show active html-fill-item html-fill-container" data-orientation="columns" aria-labelledby="tab-background">
 <div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr);
 grid-auto-rows: minmax(0, 1fr);">
 <div class="card html-fill-item html-fill-container bslib-card" data-fill="false" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
@@ -93,7 +95,206 @@ grid-auto-rows: minmax(0, 1fr);">
     </span>
 </bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
 </div>
-</div><div id="week-9" class="dashboard-page tab-pane grid-skip html-fill-item html-fill-container" data-orientation="columns" aria-labelledby="tab-week-9">
+</div><div id="track-level-features" class="dashboard-page tab-pane grid-skip html-fill-item html-fill-container" data-orientation="columns" aria-labelledby="tab-track-level-features">
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr) minmax(3em, 1fr);
+grid-auto-rows: minmax(0, 1fr);">
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
+<div class="card cell html-fill-item html-fill-container bslib-card" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-body html-fill-item html-fill-container">
+<div class="cell-output-display html-fill-item html-fill-container">
+<img src="index_files/figure-html/track-features-plot-1.png" class="img-fluid quarto-dashboard-img-contain">
+</div>
+</div>
+<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
+    <template>Expand</template>
+    <span class="bslib-full-screen-enter badge rounded-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
+    </span>
+</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
+</div><div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, max-content); grid-auto-columns: minmax(0, 1fr);">
+<div class="card html-fill-item html-fill-container bslib-card" data-fill="false" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-body html-fill-item html-fill-container">
+<p>This is an analysis</p>
+</div>
+<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
+    <template>Expand</template>
+    <span class="bslib-full-screen-enter badge rounded-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
+    </span>
+</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
+</div>
+</div>
+</div><div id="wda" class="dashboard-page tab-pane grid-skip html-fill-item html-fill-container" data-orientation="columns" aria-labelledby="tab-wda">
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr) minmax(3em, 1fr);
+grid-auto-rows: minmax(0, 1fr);">
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
+<div class="card cell html-fill-item html-fill-container bslib-card" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-body html-fill-item html-fill-container">
+<div class="cell-output-display html-fill-item html-fill-container">
+<img src="index_files/figure-html/chromagram-heal-1.png" class="img-fluid quarto-dashboard-img-contain">
+</div>
+</div>
+<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
+    <template>Expand</template>
+    <span class="bslib-full-screen-enter badge rounded-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
+    </span>
+</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
+</div><div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
+<div class="card cell html-fill-item html-fill-container bslib-card" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-body html-fill-item html-fill-container">
+<div class="cell-output-display html-fill-item html-fill-container">
+<img src="index_files/figure-html/chromagram-4ui12-1.png" class="img-fluid quarto-dashboard-img-contain">
+</div>
+</div>
+<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
+    <template>Expand</template>
+    <span class="bslib-full-screen-enter badge rounded-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
+    </span>
+</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
+</div>
+</div>
+</div><div id="track-selection" class="dashboard-page tab-pane grid-skip html-fill-item html-fill-container" data-orientation="columns" aria-labelledby="tab-track-selection">
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr) minmax(3em, 1fr);
+grid-auto-rows: minmax(0, 1fr);">
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
+<div class="card cell html-fill-item html-fill-container bslib-card" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-body html-fill-item html-fill-container">
+<div class="cell-output-display html-fill-item html-fill-container">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small">
+<caption>Most Representative Track per Album</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Year</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Album Name</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Track Name</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Danceability</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Energy</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Acousticness</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Valence</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Speechiness</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Instrumentalness</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Liveness</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Tempo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">2014</td>
+<td style="text-align: left; font-weight: bold;">Yeule</td>
+<td style="text-align: left;">Ending</td>
+<td style="text-align: right;">0.65</td>
+<td style="text-align: right;">0.57</td>
+<td style="text-align: right;">0.67</td>
+<td style="text-align: right;">0.47</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.81</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">116.02</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">2016</td>
+<td style="text-align: left; font-weight: bold;">Pathos</td>
+<td style="text-align: left;">Desire</td>
+<td style="text-align: right;">0.36</td>
+<td style="text-align: right;">0.33</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.03</td>
+<td style="text-align: right;">0.72</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">126.12</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">2017</td>
+<td style="text-align: left; font-weight: bold;">Coma</td>
+<td style="text-align: left;">I Miss You This Much</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.42</td>
+<td style="text-align: right;">0.66</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">75.01</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">2019</td>
+<td style="text-align: left; font-weight: bold;">Serotonin II</td>
+<td style="text-align: left;">Your Shadow</td>
+<td style="text-align: right;">0.18</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.72</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">73.80</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">2022</td>
+<td style="text-align: left; font-weight: bold;">Glitch Princess</td>
+<td style="text-align: left;">My Name is Nat Cmiel</td>
+<td style="text-align: right;">0.53</td>
+<td style="text-align: right;">0.57</td>
+<td style="text-align: right;">0.52</td>
+<td style="text-align: right;">0.42</td>
+<td style="text-align: right;">0.52</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.31</td>
+<td style="text-align: right;">133.10</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">2023</td>
+<td style="text-align: left; font-weight: bold;">softscars</td>
+<td style="text-align: left;">x w x</td>
+<td style="text-align: right;">0.39</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.24</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.28</td>
+<td style="text-align: right;">138.05</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">2025</td>
+<td style="text-align: left; font-weight: bold;">Evangelic Girl is a Gun</td>
+<td style="text-align: left;">Tequila Coma</td>
+<td style="text-align: right;">0.65</td>
+<td style="text-align: right;">0.87</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">0.84</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.37</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">79.99</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
+    <template>Expand</template>
+    <span class="bslib-full-screen-enter badge rounded-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
+    </span>
+</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
+</div><div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, max-content); grid-auto-columns: minmax(0, 1fr);">
+<div class="card html-fill-item html-fill-container bslib-card" data-fill="false" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-body html-fill-item html-fill-container">
+<p>This is an analysis, where I am going to justify why I took the 2 tracks I chose to analyse more in-depth (Didn’t have to do it for all albums, because purchasing music gets expensive for just a single course)</p>
+</div>
+<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
+    <template>Expand</template>
+    <span class="bslib-full-screen-enter badge rounded-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
+    </span>
+</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
+</div>
+</div>
+</div><div id="chroma--and-timbre-features" class="dashboard-page tab-pane grid-skip html-fill-item html-fill-container" data-orientation="columns" aria-labelledby="tab-chroma--and-timbre-features">
 <div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr) minmax(3em, 1fr) minmax(3em, 1fr);
 grid-auto-rows: minmax(0, 1fr);">
 <div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
@@ -135,7 +336,7 @@ grid-auto-rows: minmax(0, 1fr);">
 </bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
 </div>
 </div>
-</div><div id="week-10" class="dashboard-page tab-pane grid-skip html-fill-item html-fill-container" data-orientation="columns" aria-labelledby="tab-week-10">
+</div><div id="keygrams" class="dashboard-page tab-pane grid-skip html-fill-item html-fill-container" data-orientation="columns" aria-labelledby="tab-keygrams">
 <div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr) minmax(3em, 1fr) minmax(3em, 1fr);
 grid-auto-rows: minmax(0, 1fr);">
 <div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
@@ -177,7 +378,7 @@ grid-auto-rows: minmax(0, 1fr);">
 </bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
 </div>
 </div>
-</div><div id="week-11" class="dashboard-page tab-pane grid-skip html-fill-item html-fill-container" data-orientation="columns" aria-labelledby="tab-week-11">
+</div><div id="temporal-features" class="dashboard-page tab-pane grid-skip html-fill-item html-fill-container" data-orientation="columns" aria-labelledby="tab-temporal-features">
 <div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr) minmax(3em, 1fr) minmax(3em, 1fr);
 grid-auto-rows: minmax(0, 1fr);">
 <div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
@@ -219,7 +420,7 @@ grid-auto-rows: minmax(0, 1fr);">
 </bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
 </div>
 </div>
-</div><div id="week-12" class="dashboard-page tab-pane grid-skip html-fill-item html-fill-container" data-orientation="columns" aria-labelledby="tab-week-12">
+</div><div id="clustering" class="dashboard-page tab-pane grid-skip html-fill-item html-fill-container" data-orientation="columns" aria-labelledby="tab-clustering">
 <div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr) minmax(3em, 1fr) minmax(3em, 1fr);
 grid-auto-rows: minmax(0, 1fr);">
 <div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
@@ -251,7 +452,7 @@ grid-auto-rows: minmax(0, 1fr);">
 </div><div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, max-content); grid-auto-columns: minmax(0, 1fr);">
 <div class="card html-fill-item html-fill-container bslib-card" data-fill="false" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
 <div class="card-body html-fill-item html-fill-container">
-<p>Two classifiers were trained to predict which album a track belongs to — a 1-nearest neighbour KNN and a random forest — both evaluated with 5-fold cross-validation. Both achieve around 40% accuracy, modest but above chance for seven classes. Both “Evangelic Girl is a Gun” and “Glitch Princess” classify the best in both models, likely because both albums with a distinctive sound, while Coma and the debut Yeule are almost never identified correctly. “Softscars” is often predicted to be in either “Evangelic Girl is a Gun” or “Glitch Princess”, which makes sense, since it is the album released between the two and also has a sound that is a mix of the two. Overall the models both show that these Spotify features carry some signal, but not enough to reliably classify most of Yeule’s releases.</p>
+<p>Two classifiers were trained to predict which album a track belongs to, a 1-nearest neighbour KNN and a random forest, both evaluated with 5-fold cross-validation. Both achieve around 40% accuracy, modest but above chance for seven classes. Both “Evangelic Girl is a Gun” and “Glitch Princess” classify the best in both models, likely because both albums with a distinctive sound, while Coma and the debut Yeule are almost never identified correctly. “Softscars” is often predicted to be in either “Evangelic Girl is a Gun” or “Glitch Princess”, which makes sense, since it is the album released between the two and also has a sound that is a mix of the two. Overall the models both show that these Spotify features carry some signal, but not enough to reliably classify most of Yeule’s releases.</p>
 </div>
 <bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
     <template>Expand</template>
