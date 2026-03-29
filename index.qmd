@@ -114,11 +114,12 @@ p2 <- ghosts |>
   theme_minimal() +
   scale_fill_viridis_c()
 ```
-## Ending
+## Wrapper
+### Ending
 ```{r chromagram-heal, warning=FALSE, message=FALSE, echo=FALSE}
 p1
 ```
-## Tequila
+### Tequila
 ```{r chromagram-4ui12, warning=FALSE, message=FALSE, echo=FALSE}
 p2
 ```
